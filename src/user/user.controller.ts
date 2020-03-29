@@ -13,7 +13,7 @@ class User implements IController {
   }
 
   initializeRoutes() {
-    this.router.use(authMiddleware(this.secret));
+    this.router.use(this.path, authMiddleware(this.secret));
     this.router.get(this.path, this.getInfo);
     this.router.patch(this.path, this.changeName);
   }

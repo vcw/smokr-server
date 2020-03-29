@@ -16,7 +16,7 @@ class Smoke implements IController {
   }
 
   initializeRoutes() {
-    this.router.use(authMiddleware(this.secret));
+    this.router.use(this.path, authMiddleware(this.secret));
     this.router.get(this.path, this.getLastTenSmokes.bind(this));
     this.router.post(this.path, this.doSmoke.bind(this));
   }
