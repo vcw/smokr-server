@@ -1,10 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express'
-import { DateTime } from 'luxon';
 import authMiddleware from '../middlewares/auth.middleware'
 import IController from '../interfaces/controller.interface'
 import smokeModel from './smoke.model';
 import IRequestWithUser from 'interfaces/requestWithUser.interface';
-import InvalidDateException from '../exceptions/invalidDateException';
 
 class Smoke implements IController {
   public router = Router();
@@ -36,23 +34,14 @@ class Smoke implements IController {
   private async doSmoke(req: Request, res: Response, next: NextFunction) {
     const reqWithUser = req as IRequestWithUser;
     const user = reqWithUser.user;
-    try {
-      const date = DateTime.fromISO(reqWithUser.body.date, { setZone: true });
-      if (date.isValid) {
-        const smoke = await this.smoke.create({
-          userId: user._id,
-          date: date
-        });
-        res.send({
-          id: smoke._id,
-          date: smoke.date
-        });
-      } else {
-        next(new InvalidDateException())
-      }
-    } catch (err) {
-      next(new InvalidDateException());
-    }
+    const smoke = await this.smoke.create({
+      userId: user._id,
+      date: new Date
+    });
+    res.send({
+      id: smoke._id,
+      date: smoke.date
+    });
   }
 
   deleteSmoke() {}

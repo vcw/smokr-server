@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 
 interface ISmoke extends Document {
   userId: string;
-  date: string;
+  date: Date;
 }
 
 export default ISmoke;

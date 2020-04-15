@@ -3,7 +3,7 @@ import ISmoke from './smoke.interface';
 
 const smokeSchema = new Schema({
   userId: { type: Types.ObjectId, ref: 'User', required: true },
-  date: { type: String, required: true }
+  date: { type: Date, required: true }
 });
 
 const smokeModel = model<ISmoke>('Smoke', smokeSchema);
