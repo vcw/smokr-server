@@ -1,7 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import IRequestWithUser from '../interfaces/requestWithUser.interface';
 import IController from '../interfaces/controller.interface';
-import userModel from './user.model';
 import authMiddleware from '../middlewares/auth.middleware';
 
 class User implements IController {
