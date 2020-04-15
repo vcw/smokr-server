@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import errorMiddleware from './middlewares/error.middleware';
 import IController from './interfaces/controller.interface';
 import IMongoCredentials from './interfaces/mongoCredentials.interface';
+import corsMiddleware from './middlewares/cors.middleware';
 
 class App {
   public app = express();
@@ -19,6 +20,7 @@ class App {
   private initializeMiddlewares() {
     this.app.use(bodyParser.json());
     this.app.use(cookieParser());
+    this.app.use(corsMiddleware());
   }
 
   private initializeControllers() {
