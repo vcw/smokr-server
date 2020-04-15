@@ -57,7 +57,7 @@ class Auth implements IController {
 
       res.setHeader('Set-Cookie', cookie);
       res.send({
-        username: user!.username,
+        username: user!.email,
         name: user!.name
       });
     } else {
