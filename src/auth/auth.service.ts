@@ -20,7 +20,7 @@ class AuthService {
   }
 
   createCookie(tokenData: ITokenData) {
-    return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`
+    return `Authorization=${tokenData.token}; Max-Age=${tokenData.expiresIn}`
   }
 }
 
