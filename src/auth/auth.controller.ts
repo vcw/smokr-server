@@ -3,7 +3,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import IController from 'interfaces/controller.interface';
 import userModel from '../user/user.model';
 import AuthService from './auth.service';
-import UserWithThatUsernameAlreadyExistsException from '../exceptions/userWithThatUsernameAlreadyExistsException';
+import UserWithThatEmailAlreadyExistsException from '../exceptions/userWithThatEmailAlreadyExistsException';
 import WrongCredentialsException from '../exceptions/wrongCredentialsException';
 
 class Auth implements IController {
@@ -25,8 +25,8 @@ class Auth implements IController {
 
   private async register(req: Request, res: Response, next: NextFunction) {
     const userData = req.body;
-    if ( await this.user.findOne({ username: userData.username })) {
-      next(new UserWithThatUsernameAlreadyExistsException(userData.username));
+    if ( await this.user.findOne({ email: userData.email })) {
+      next(new UserWithThatEmailAlreadyExistsException(userData.email));
     } else {
       const hashedPassword = await bcrypt.hash(userData.password, 10);
       const user = await this.user.create({
@@ -47,7 +47,7 @@ class Auth implements IController {
 
   private async login(req: Request, res: Response, next: NextFunction) {
     const loginData = req.body;
-    const user = await this.user.findOne({ username: loginData.username });
+    const user = await this.user.findOne({ email: loginData.email });
 
     const isCredentialsCorrect = !!user && await bcrypt.compare(loginData.password, user.password)
 
@@ -57,7 +57,7 @@ class Auth implements IController {
 
       res.setHeader('Set-Cookie', cookie);
       res.send({
-        username: user!.email,
+        email: user!.email,
         name: user!.name
       });
     } else {

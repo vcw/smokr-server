@@ -21,7 +21,7 @@ class User implements IController {
     const reqWithUser = req as IRequestWithUser;
     const user = reqWithUser.user;
     res.send({
-      username: user.email,
+      email: user.email,
       name: user.name
     });
   }
@@ -32,7 +32,7 @@ class User implements IController {
     user.name = req.body.name;
     user.save();
     res.send({
-      username: user.email,
+      email: user.email,
       name: user.name
     });
   }
