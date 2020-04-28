@@ -8,10 +8,11 @@ import MissingTokenException from '../exceptions/missingTokenException';
 
 function authMiddleware(secret: string) {
   return async function (req: Request, res: Response, next: NextFunction) {
-    const cookies = req.cookies;
-    if (cookies && cookies.Authorization) {
+    const { authorization } = req.headers;
+    if (authorization && authorization.startsWith('Bearer ')) {
       try {
-        const verificationResponse = jwt.verify(cookies.Authorization, secret) as IDataStoredInToken;
+        const token = authorization.slice(7, authorization.length)
+        const verificationResponse = jwt.verify(token, secret) as IDataStoredInToken;
         const id = verificationResponse._id;
         const user = await userModel.findById(id);
         

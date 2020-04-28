@@ -1,4 +1,4 @@
-import bcrypt, { hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { Router, Request, Response, NextFunction } from 'express';
 import IController from 'interfaces/controller.interface';
 import userModel from '../user/user.model';
@@ -34,12 +34,11 @@ class Auth implements IController {
         password: hashedPassword
       });
 
-      const tokenData = this.authService.createToken(user);
-      const cookie = this.authService.createCookie(tokenData);
+      const token = this.authService.createToken(user);
 
-      res.setHeader('Set-Cookie', cookie);
       res.send({
         ...userData,
+        token,
         password: undefined
       })
     }
@@ -52,13 +51,12 @@ class Auth implements IController {
     const isCredentialsCorrect = !!user && await bcrypt.compare(loginData.password, user.password)
 
     if (isCredentialsCorrect) {
-      const tokenData = this.authService.createToken(user!);
-      const cookie = this.authService.createCookie(tokenData);
+      const token = this.authService.createToken(user!);
 
-      res.setHeader('Set-Cookie', cookie);
       res.send({
         email: user!.email,
-        name: user!.name
+        name: user!.name,
+        token
       });
     } else {
       next(new WrongCredentialsException());
