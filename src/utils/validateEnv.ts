@@ -6,7 +6,10 @@ function getValidatedEnvVars() {
     MONGO_USER: str(),
     MONGO_PASSWORD: str(),
     MONGO_PATH: str(),
-    JWT_SECRET: str()
+    FIREBASE_KEY: str(),
+    FIREBASE_EMAIL: str(),
+    FIREBASE_PROJECT_ID: str(),
+    // JWT_SECRET: str()
   });
 }
 
