@@ -1,8 +1,7 @@
 import { Request } from 'express';
-import IUser from "../user/user.interface";
 
 interface IRequestWithUser extends Request {
-  user: IUser;
+  userId: string;
 }
 
 export default IRequestWithUser;

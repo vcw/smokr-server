@@ -1,9 +1,7 @@
 import 'dotenv/config';
 import App from './App';
 import getValidatedEnvVars from './utils/validateEnv';
-import Auth from './auth/auth.controller';
-import User from './user/user.controller';
-import Smoke from './smoke/smoke.controller';
+import Smoking from './smoking/smoking.controller';
 
 const env = getValidatedEnvVars();
 
@@ -12,20 +10,25 @@ const {
   MONGO_USER,
   MONGO_PASSWORD,
   MONGO_PATH,
-  JWT_SECRET
+  FIREBASE_KEY,
+  FIREBASE_EMAIL,
+  FIREBASE_PROJECT_ID,
 } = env;
 
 
 const app = new App(
   [
-    new Auth(JWT_SECRET),
-    new User(JWT_SECRET),
-    new Smoke(JWT_SECRET)
+    new Smoking(),
   ],
   {
     user: MONGO_USER,
     password: MONGO_PASSWORD,
     path: MONGO_PATH
+  },
+  {
+    key: FIREBASE_KEY,
+    email: FIREBASE_EMAIL,
+    projectId: FIREBASE_PROJECT_ID
   },
   PORT
 );
