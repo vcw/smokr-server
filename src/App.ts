@@ -1,7 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-// import cookieParser from 'cookie-parser';
 import errorMiddleware from './middlewares/error.middleware';
 import IController from './interfaces/controller.interface';
 import IMongoCredentials from './interfaces/mongoCredentials.interface';
