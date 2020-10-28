@@ -1,10 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import errorMiddleware from './middlewares/error.middleware';
 import IController from './interfaces/controller.interface';
 import IMongoCredentials from './interfaces/mongoCredentials.interface';
-import corsMiddleware from './middlewares/cors.middleware';
 import admin from 'firebase-admin';
 
 class App {
@@ -25,7 +25,11 @@ class App {
 
   private initializeMiddlewares() {
     this.app.use(bodyParser.json());
-    this.app.use(corsMiddleware());
+    this.app.use(cors({
+      origin: true,
+      credentials: true,
+      allowedHeaders: '*',
+    }));
   }
 
   private initializeControllers() {
