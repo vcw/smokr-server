@@ -20,6 +20,17 @@ class Smoking implements IController {
     this.router.post(this.path, this.recordSmoking.bind(this));
   }
 
+  private async getLastSmoking(req: Request, res: Response, next: NextFunction) {
+      const reqWithUser = req as IRequestWithUser;
+      const { userId } = reqWithUser;
+      const response = await this.smoking.find({ userId }).sort({ timestamp: -1 }).limit(1);
+      const { timestamp, _id } = response[0];
+      res.send({
+          timestamp,
+          _id,
+      });
+  }
+
   private async getSmokingsInRange(req: Request, res: Response, next: NextFunction) {
     const reqWithRange = req as IRequestWithRange;
     const { rangeStart, rangeEnd } = reqWithRange.body;
