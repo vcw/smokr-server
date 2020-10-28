@@ -17,6 +17,7 @@ class Smoking implements IController {
   initializeRoutes() {
     this.router.use(this.path, authMiddleware());
     this.router.get(this.path, this.getSmokingsInRange.bind(this));
+    this.router.get(this.path + '/last', this.getLastSmoking.bind(this));
     this.router.post(this.path, this.recordSmoking.bind(this));
   }
 
