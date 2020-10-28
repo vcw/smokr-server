@@ -50,16 +50,23 @@ class Smoking implements IController {
   }
 
   private async recordSmoking(req: Request, res: Response, next: NextFunction) {
-    const reqWithUser = req as IRequestWithUser;
-    const { timestamp } = reqWithUser.body;
-    const { userId } = reqWithUser;
-    console.log(timestamp);
-    console.log(userId);
-    const newSmoking = new this.smoking({
-      userId,
-      timestamp
-    });
-    newSmoking.save();
+    try {
+      const reqWithUser = req as IRequestWithUser;
+      const { timestamp } = reqWithUser.body;
+      const { userId } = reqWithUser;
+      const newSmoking = new this.smoking({
+        userId,
+        timestamp
+      });
+      newSmoking.save();
+      res.send({
+        status: 'Success',
+      });
+    } catch (error) {
+      res.send({
+        status: 'Fail',
+      });
+    }
   }
 }
 
