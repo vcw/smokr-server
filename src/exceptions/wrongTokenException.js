@@ -1,4 +1,4 @@
-import HttpException from "./httpException";
+const HttpException = require("./httpException");
 
 class WrongTokenException extends HttpException {
   constructor() {
@@ -6,4 +6,4 @@ class WrongTokenException extends HttpException {
   }
 }
 
-export default WrongTokenException;
+module.exports = WrongTokenException;

@@ -1,11 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
-import admin from 'firebase-admin';
-import IRequestWithUser from '../interfaces/requestWithUser.interface';
-import MissingTokenException from '../exceptions/missingTokenException';
-import WrongTokenException from '../exceptions/wrongTokenException';
+const admin = require('firebase-admin');
+const MissingTokenException = require('../exceptions/missingTokenException');
+const WrongTokenException = require('../exceptions/wrongTokenException');
 
 function authMiddleware() {
-  return async function (req: Request, res: Response, next: NextFunction) {
+  return async function (req, res, next) {
     const { authorization } = req.headers;
     if (authorization && authorization.startsWith('Bearer ')) {
       const token = authorization.slice(7, authorization.length);
@@ -14,8 +12,7 @@ function authMiddleware() {
         const decodedToken = await admin.auth().verifyIdToken(token);
         const id = decodedToken.uid;
         
-        const reqWithUser = req as IRequestWithUser;
-        reqWithUser.userId = id;
+        req.userId = id;
         next();
       } catch (error) {
         console.log(error)
@@ -27,4 +24,4 @@ function authMiddleware() {
   }
 }
 
-export default authMiddleware;
+module.exports = authMiddleware;

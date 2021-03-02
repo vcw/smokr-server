@@ -1,21 +1,24 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import errorMiddleware from './middlewares/error.middleware';
-import IController from './interfaces/controller.interface';
-import IMongoCredentials from './interfaces/mongoCredentials.interface';
-import admin from 'firebase-admin';
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const errorMiddleware = require('./middlewares/error.middleware');
+const admin = require('firebase-admin');
 
 class App {
-  public app = express();
+  app = express();
 
   constructor(
-    private controllers: Array<IController>,
-    private mongoCredentials: IMongoCredentials,
-    private firebaseCredentials: any,
-    public port: number
+    controllers,
+    mongoCredentials,
+    firebaseCredentials,
+    port
     ) {
+    this.controllers = controllers;
+    this.mongoCredentials = mongoCredentials;
+    this.firebaseCredentials = firebaseCredentials;
+    this.port = port;
+
     this.initializeMiddlewares();
     this.initializeControllers();
     this.initializeErrorHandling();
@@ -23,7 +26,7 @@ class App {
     this.connectToDB();
   }
 
-  private initializeMiddlewares() {
+  initializeMiddlewares() {
     this.app.use(bodyParser.json());
     this.app.use(cors({
       origin: true,
@@ -32,17 +35,17 @@ class App {
     }));
   }
 
-  private initializeControllers() {
+  initializeControllers() {
     this.controllers.forEach((controller) => {
       this.app.use('/', controller.router);
     });
   }
 
-  private initializeErrorHandling() {
+  initializeErrorHandling() {
     this.app.use(errorMiddleware);
   }
 
-  private initializeFirebase() {
+  initializeFirebase() {
     const creds = this.firebaseCredentials;
     admin.initializeApp({
       credential: admin.credential.cert({
@@ -53,13 +56,13 @@ class App {
     })
   }
 
-  public listen() {
+  listen() {
     this.app.listen(this.port, () => {
       console.log(`App is listening on the port ${this.port}`);
     });
   }
 
-  public connectToDB() {
+  connectToDB() {
     const { user, password, path } = this.mongoCredentials;
     mongoose.connect(`mongodb+srv://${user}:${password}@${path}/smokrapp`, {
       useNewUrlParser: true,
@@ -69,4 +72,4 @@ class App {
   }
 }
 
-export default App;
+module.exports = App;
