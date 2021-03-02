@@ -1,4 +1,4 @@
-import { cleanEnv, str, port } from 'envalid';
+const { cleanEnv, str, port } = require('envalid');
 
 function getValidatedEnvVars() {
   return cleanEnv(process.env, {
@@ -9,8 +9,7 @@ function getValidatedEnvVars() {
     FIREBASE_KEY: str(),
     FIREBASE_EMAIL: str(),
     FIREBASE_PROJECT_ID: str(),
-    // JWT_SECRET: str()
   });
 }
 
-export default getValidatedEnvVars;
+module.exports = getValidatedEnvVars;

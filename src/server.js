@@ -1,7 +1,7 @@
-import 'dotenv/config';
-import App from './App';
-import getValidatedEnvVars from './utils/validateEnv';
-import Smoking from './smoking/smoking.controller';
+require('dotenv/config');
+const App = require('./App');
+const getValidatedEnvVars = require('./utils/validateEnv');
+const Smoking = require('./smoking/smoking.controller');
 
 const env = getValidatedEnvVars();
 
