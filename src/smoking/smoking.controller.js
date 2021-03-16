@@ -19,6 +19,7 @@ class Smoking {
   }
 
   async getLastSmoking(req, res, next) {
+    try {
       const { userId } = req;
       const response = await this.smoking.find({ userId })
         .sort({ timestamp: -1 })
@@ -28,6 +29,11 @@ class Smoking {
           timestamp,
           _id,
       });
+    } catch (error) {
+      res.send({
+        'Error': 'Smoking not found'
+      });
+    }
   }
 
   async getSmokingsInRange(req, res, next) {
