@@ -31,7 +31,7 @@ class Smoking {
       });
     } catch (error) {
       res.send({
-        'Error': 'Smoking not found'
+        error: 'Smoking not found'
       });
     }
   }
